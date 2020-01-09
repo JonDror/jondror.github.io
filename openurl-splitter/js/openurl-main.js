@@ -12,7 +12,7 @@ function decode() {
 
 function split() {
     $('#attDetailsTable').show();
-    decode();
+    //decode();
     //remove all previuos line breaks
     replaceInText("\n", "");
     // add new line breaks
