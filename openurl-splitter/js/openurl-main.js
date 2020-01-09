@@ -45,6 +45,10 @@ function printAtt() {
 
     $('#attDetails').empty();
     $.each( getUrlVars(), function( key, value ){
+    //error logic
+    if (value.indexOf(" ") > -1){
+      key = key + "<br><small class='text-danger'>SPACE IN VALUE</small>";
+    }
     showAtt(key,value);
     });
     replaceInText("&lt;", "<");
