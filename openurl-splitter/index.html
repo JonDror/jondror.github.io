@@ -41,7 +41,7 @@
         <small class="text-muted">and decoder/encoder</small></h1>
     </div>
     <div class="row justify-content-md-right">
-      <div class="col-8">
+      <div class="col-7">
         <form onsubmit="return false;">
           <div class="form-group row">
             <textarea data-autoresize cols="100" rows="10" id="dencoder" class="form-control col-12"
@@ -49,14 +49,16 @@
           </div>
           <hr>
           <div class="form-group row">
-            <div class='col-12'>
+            <div class='col-10'>
               <input type="button" class="btn btn-success" onclick="decode()" value="Decode">
+              <input type="button" class="btn btn-danger" onclick="encode()" value="Encode">
               <input type="button" class="btn btn-info" onclick="split()" value="Split">
               <input type="button" class="btn btn-warning" onclick="go()" value="Try this URL in a new tab">
               <input type="button" class="btn btn-default" onclick="location.reload()" value="Reset">
             </div>
-            </br><input type="button" class="btn btn-link" onclick="encode()" value="Encode Back">
+            </br>
           </div>
+          </form>
       </div>
       <div class="col-4" id="attDetailsTable">
         <h4>Quick find</h4>
@@ -81,7 +83,6 @@
               href="http://meyerweb.com/eric/tools/dencoder/">http://meyerweb.com/eric/tools/dencoder/</a></small></li>
       </ul>
     </div>
-    </form>
     <div class="row" id="footer">
       <img alt="Creative Commons License" border="0" src="http://creativecommons.org/images/public/somerights.gif">
     </div>

@@ -44,35 +44,24 @@ function printAtt() {
     replaceInText(">", "&gt;");
 
     $('#attDetails').empty();
-    showAtt("Journal Title", getAtt("jtitle"));
-    showAtt("Book Title", getAtt("btitle"));
-    showAtt("Article Title", getAtt("atitle"));
-    showAtt("Type", getAtt("genre"));
-    showAtt("E-ISSN", addDash(getAtt("eissn")));
-    showAtt("ISSN", addDash(getAtt("issn")));
-    showAtt("ISBN", getAtt("isbn"));
-    showAtt("E-ISBN", getAtt("eisbn"));
-    showAtt("Year/Date", getAtt("date"));
-    showAtt("Volume", getAtt("volume"));
-    showAtt("Issue", getAtt("issue"));
-    showAtt("Start Page", getAtt("spage"));
-    showAtt("DOI", getAtt("rft_id=info:doi"));
-    showAtt("pmid", getAtt("rft_id=info:pmid"));
-    showAtt("oclc", getAtt("rft_id=info:oclcnum"));
-    showAtt("lccn", getAtt("rft_id=info:lccn"));
-    showAtt("PCO Record", getAtt("rft_dat"));
-    showAtt("Source of openURL", getAtt("rfr_id=info:sid"));
-
+    $.each( getUrlVars(), function( key, value ){
+    showAtt(key,value);
+    });
     replaceInText("&lt;", "<");
     replaceInText("&gt;", ">");
 }
 
+function getUrlVars() {
+    var url=$('#dencoder').val();
+    var vars = {};
+    var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
 function getAtt(att) {
-    if (att.startsWith("rft_id") || att.startsWith("rfr_id")) {
-        var subStr = $('#dencoder').val().match(new RegExp("" + att + "/(.*)&", 'i'));
-    } else {
-        var subStr = $('#dencoder').val().match(new RegExp("" + att + "=(.*)&", 'i'));
-    }
+    var subStr = $('#dencoder').val().match(new RegExp("" + att + "=(.*)&", 'i'));
     if (subStr == null) {
         return "N/A";
     } else {
