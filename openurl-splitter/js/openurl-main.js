@@ -122,4 +122,8 @@ $(document).ready(function () {
     }, false);
 
     $('#attDetailsTable').hide();
+
+    if (window.location.href.indexOf("demo=true") > -1) {
+    $('#dencoder').val("https://5035.xg4ken.com/trk/v1?prof=15525&camp=50543&kct=google&kchid=1070664021&criteriaid=kwd-473717616139&campaignid=8557496860&locphy=&adgroupid=83431984501&adpos=&cid=405991884886&networkType=search&kdv=c&kext=&kadtype=&kmc=&kpid=&url=https://www.randsroofing.co.uk/fascias-soffits-and-guttering");
+}
 });
