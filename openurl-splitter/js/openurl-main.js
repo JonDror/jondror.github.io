@@ -20,6 +20,7 @@ function split() {
 
     validateURL();
     printAtt();
+    ($('#error_list').children('div').length == 0) ? $('#errors').hide() : $('#errors').show();
     autoExpand(document.getElementById('dencoder'));
 }
 
@@ -45,6 +46,7 @@ function printAtt() {
     replaceInText(">", "&gt;");
 
     $('#attDetails').empty();
+    showAtt('<strong>Endpoint</strong>',);
     $.each( getUrlVars(), function( key, value ){
     key=key.replace(new RegExp("\n", "g"), "");
     //error logic
@@ -56,8 +58,8 @@ function printAtt() {
     let numericalOnlyKeys = ["campaignid","adgroupid","adgroupid"];
     if (numericalOnlyKeys.includes(key)){
       if (value.match(/[^\d]/)){
-        addError("<strong>"+key+"</strong> SHOULD BE ONLY DIGITS");
-        key = "<p class='text-danger'>"+key+"</strong>";
+        addError("<strong>"+key+"</strong> SHOULD BE ONLY DIGITS","warning");
+        key = "<p class='text-warning'>"+key+"</strong>";
         }
     }
     showAtt(key,value);
@@ -74,10 +76,12 @@ function validateURL(){
   }
 }
 
-function addError(err){
-  var errorLine = document.createElement("li");
-  errorLine.innerHTML = err;
-  errorLine.setAttribute("class", "text-danger url-error");
+function addError(err,type){
+  //type is bootstrap type
+  if (!type){
+    type = 'danger';
+  }
+  var errorLine = '<div class="alert url-error alert-'+type+'" role="alert">'+err+'</div>';
   $('#error_list').append(errorLine);
 }
 function getUrlVars() {
@@ -153,6 +157,6 @@ $(document).ready(function () {
     $('#attDetailsTable').hide();
 
     if (window.location.href.indexOf("demo=true") > -1) {
-    $('#dencoder').val("https://5035.xg4ken.com/trk/v1?prof=15525&camp=50543&kct=google&kchid=1070664021&criteriaid=kwd-473717616139&campaignid=8557496860&locphy=&adgroupid=83431984501&adpos=&cid=405991884886&networkType=search&kdv=c&kext=&kadtype=&kmc=&kpid=&url=https://www.randsroofing.co.uk/fascias-soffits-and-guttering");
+    $('#dencoder').val("https://5035.xg4ken.com/trk/v1?prof=15525&camp=50543&kct=google&kchid=1070664021&criteriaid=kwd-473717616139&campaignid=a8557496860&locphy=&adgroupid=83431984501&adpos=&cid=405991884886&networkType=search&kdv=c&kext=&kadtype=&kmc=&kpid=&url=https://www.randsroofing.co.uk/fascias soffits-and-guttering");
 }
 });
