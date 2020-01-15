@@ -18,6 +18,7 @@ function split() {
     // add new line breaks
     replaceInText("&", "&\n");
 
+    validateURL();
     printAtt();
     autoExpand(document.getElementById('dencoder'));
 }
@@ -45,9 +46,19 @@ function printAtt() {
 
     $('#attDetails').empty();
     $.each( getUrlVars(), function( key, value ){
+    key=key.replace(new RegExp("\n", "g"), "");
     //error logic
     if (value.indexOf(" ") > -1){
-      key = key + "<br><small class='text-danger'>SPACE IN VALUE</small>";
+      addError("<strong>"+key+"</strong> has an unencoded space in value");
+      key = "<p class='text-danger'>"+key+"</strong>";
+    }
+
+    let numericalOnlyKeys = ["campaignid","adgroupid","adgroupid"];
+    if (numericalOnlyKeys.includes(key)){
+      if (value.match(/[^\d]/)){
+        addError("<strong>"+key+"</strong> SHOULD BE ONLY DIGITS");
+        key = "<p class='text-danger'>"+key+"</strong>";
+        }
     }
     showAtt(key,value);
     });
@@ -55,6 +66,20 @@ function printAtt() {
     replaceInText("&gt;", ">");
 }
 
+function validateURL(){
+  $('.url-error').remove();
+  var url = $('#dencoder').val();
+  if (url.replace(/[^\?]/g, "").length > 1){
+    addError('More then one question mark!');
+  }
+}
+
+function addError(err){
+  var errorLine = document.createElement("li");
+  errorLine.innerHTML = err;
+  errorLine.setAttribute("class", "text-danger url-error");
+  $('#error_list').append(errorLine);
+}
 function getUrlVars() {
     var url=$('#dencoder').val();
     var vars = {};
