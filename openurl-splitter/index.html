@@ -40,14 +40,13 @@
       <h1 class="display-4">OpenURL Splitter
         <small class="text-muted">and decoder/encoder</small></h1>
     </div>
-    <div class="row justify-content-md-right">
+    <div class="row justify-content-md-right" id='main'>
       <div class="col-7">
         <form onsubmit="return false;">
           <div class="form-group row">
             <textarea data-autoresize data-gramm_editor="false" cols="100" rows="10" id="dencoder" class="form-control col-12"
               style="min-width: 100%" placeholder='Paste OpenURL Here....'></textarea>
           </div>
-          <hr>
           <div class="form-group row">
             <div class='col-10'>
               <button class="btn btn-success" onclick="decode()"><i class="fa fa-chain" aria-hidden="true"></i> Decode</button>
@@ -61,8 +60,8 @@
           </form>
       </div>
       <div class="col-4" id="attDetailsTable">
-        <div id='errors'>
-          <legend>Errors</legend>
+        <div id='errors' style='display:none;'>
+          <legend>Errors<small id='error_badge'></small></legend>
           <div id='error_list'>
           </div>
         </div>
@@ -80,16 +79,9 @@
         </table>
       </div>
     </div>
-    <div class="row">
-      <ul>
-        <li>Input a string of text and encode or decode it as you like. Plus, you can split the an OpenURL to each
-          attribute. </li>
-        <li><small>Based on <a
-              href="http://meyerweb.com/eric/tools/dencoder/">http://meyerweb.com/eric/tools/dencoder/</a></small></li>
-      </ul>
-    </div>
     <div class="row" id="footer">
-      <img alt="Creative Commons License" border="0" src="http://creativecommons.org/images/public/somerights.gif">
+      <p><small>Based on <a
+            href="http://meyerweb.com/eric/tools/dencoder/">http://meyerweb.com/eric/tools/dencoder/</a></small></p>
     </div>
   </div>
 </body>

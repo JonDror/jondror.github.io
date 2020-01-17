@@ -12,14 +12,14 @@ function decode() {
 
 function split() {
     $('#attDetailsTable').show();
+    $('.url-error').remove();
     //decode();
     //remove all previuos line breaks
     replaceInText("\n", "");
     // add new line breaks
     replaceInText("&", "&\n");
-
-    validateURL();
     printAtt();
+    validateURL();
     ($('#error_list').children('div').length == 0) ? $('#errors').hide() : $('#errors').show();
     autoExpand(document.getElementById('dencoder'));
 }
@@ -46,22 +46,25 @@ function printAtt() {
     replaceInText(">", "&gt;");
 
     $('#attDetails').empty();
-    showAtt('<strong>Endpoint</strong>',);
+    showAtt('<strong>Endpoint</strong>',getEndPoint());
     $.each( getUrlVars(), function( key, value ){
     key=key.replace(new RegExp("\n", "g"), "");
     //error logic
     if (value.indexOf(" ") > -1){
       addError("<strong>"+key+"</strong> has an unencoded space in value");
-      key = "<p class='text-danger'>"+key+"</strong>";
     }
 
     let numericalOnlyKeys = ["campaignid","adgroupid","adgroupid"];
     if (numericalOnlyKeys.includes(key)){
       if (value.match(/[^\d]/)){
         addError("<strong>"+key+"</strong> SHOULD BE ONLY DIGITS","warning");
-        key = "<p class='text-warning'>"+key+"</strong>";
         }
     }
+
+    if (value.match(/[^\x20-\x7E]/)){
+      addError("<strong>"+key+"</strong> has invisible characters in it. <a href='https://www.soscisurvey.de/tools/view-chars.php' target='_blank' class='alert-link'>Test here</a>");
+    }
+
     showAtt(key,value);
     });
     replaceInText("&lt;", "<");
@@ -69,10 +72,24 @@ function printAtt() {
 }
 
 function validateURL(){
-  $('.url-error').remove();
   var url = $('#dencoder').val();
+  //validation rules
   if (url.replace(/[^\?]/g, "").length > 1){
-    addError('More then one question mark!');
+    addError('Found <strong>'+url.replace(/[^\?]/g, "").length+'</strong> question marks!');
+  }
+
+  if (url.replace(/[^\?]/g, "").length < 1){
+    addError('Question mark after endpoint is missing!');
+  }
+
+  //update badges
+  let numOfDanger = $('div.url-error.alert-danger').length;
+  let numOfWarning = $('div.url-error.alert-warning').length;
+  if (numOfDanger > 0){
+    $('#error_badge').append('<span class="badge badge-pill badge-danger url-error" id="danger-badge">'+numOfDanger+'</span>');
+  }
+  if (numOfWarning > 0){
+    $('#error_badge').append('<span class="badge badge-pill badge-warning url-error" id="danger-badge">'+numOfWarning+'</span>');
   }
 }
 
@@ -81,7 +98,8 @@ function addError(err,type){
   if (!type){
     type = 'danger';
   }
-  var errorLine = '<div class="alert url-error alert-'+type+'" role="alert">'+err+'</div>';
+  var errorLine = "<div class='alert url-error alert-"+type+"' role='alert'>"+err+"</div>";
+  console.log("error:", errorLine);
   $('#error_list').append(errorLine);
 }
 function getUrlVars() {
@@ -91,6 +109,12 @@ function getUrlVars() {
         vars[key] = value;
     });
     return vars;
+}
+
+function getEndPoint(){
+  var url=$('#dencoder').val();
+  var endpoint = $('#dencoder').val().match(new RegExp("[^?]*", 'i'));
+  return endpoint[0];
 }
 
 function getAtt(att) {
@@ -157,6 +181,6 @@ $(document).ready(function () {
     $('#attDetailsTable').hide();
 
     if (window.location.href.indexOf("demo=true") > -1) {
-    $('#dencoder').val("https://5035.xg4ken.com/trk/v1?prof=15525&camp=50543&kct=google&kchid=1070664021&criteriaid=kwd-473717616139&campaignid=a8557496860&locphy=&adgroupid=83431984501&adpos=&cid=405991884886&networkType=search&kdv=c&kext=&kadtype=&kmc=&kpid=&url=https://www.randsroofing.co.uk/fascias soffits-and-guttering");
+    $('#dencoder').val("https://5035.xg4ken.com/trk/v1??prof=15525&camp=50543&kct=google&kchid=1070664021&criteriaid=kwd-473717616139&campaignid=a8557496860&locphy=&adgroupid=83431984501&adpos=&cid=405991884886&networkType=search&kdv=c&kext=&kadtype=&kmc=&kpid=&campaign_name=CatchM­eIfYouCan&url=https://www.randsroofing.co.uk/fascias soffits-and-guttering");
 }
 });
