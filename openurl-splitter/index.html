@@ -1,5 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 <html>
+
 <head>
 
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -20,17 +21,17 @@
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="./css/bootstrap.min.css">
 
-    <!-- jQ -->
-    <script src="./js/jquery-3.3.1.min.js"></script>
+  <!-- jQ -->
+  <script src="./js/jquery-3.3.1.min.js"></script>
 
-    <!-- Latest compiled JavaScript -->
-    <script src="./js/bootstrap.min.js"></script>
-    <!-- Font-Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Latest compiled JavaScript -->
+  <script src="./js/bootstrap.min.js"></script>
+  <!-- Font-Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Internal -->
-    <script src="./js/openurl-main.js"></script>
+  <!-- Internal -->
+  <script src="./js/openurl-main.js"></script>
 </head>
 
 <body>
@@ -43,20 +44,24 @@
       <div class="col-7">
         <form onsubmit="return false;">
           <div class="form-group row">
-            <textarea data-autoresize data-gramm_editor="false" cols="100" rows="10" id="dencoder" class="form-control col-12"
-              style="min-width: 100%" placeholder='Paste OpenURL Here....'></textarea>
+            <textarea data-autoresize data-gramm_editor="false" cols="100" rows="10" id="dencoder"
+              class="form-control col-12" style="min-width: 100%" placeholder='Paste OpenURL Here....'></textarea>
           </div>
           <div class="form-group row">
             <div class='col-10'>
-              <button class="btn btn-success" onclick="decode()"><i class="fa fa-chain" aria-hidden="true"></i> Decode</button>
-              <button class="btn btn-danger" onclick="encode()" value="Encode"><i class="fa fa-chain-broken" aria-hidden="true"></i> Encode</button>
-              <button class="btn btn-info" onclick="split()" value="Split"><i class="fa fa-columns" aria-hidden="true"></i> Split</button>
-              <button class="btn btn-warning" onclick="go()" value="Try this URL in a new tab"><i class="fa fa-external-link" aria-hidden="true"></i> Try this URL in a new tab</button>
+              <button class="btn btn-success" onclick="decode()"><i class="fa fa-chain" aria-hidden="true"></i>
+                Decode</button>
+              <button class="btn btn-danger" onclick="encode()" value="Encode"><i class="fa fa-chain-broken"
+                  aria-hidden="true"></i> Encode</button>
+              <button class="btn btn-info" onclick="split()" value="Split"><i class="fa fa-columns"
+                  aria-hidden="true"></i> Split</button>
+              <button class="btn btn-warning" onclick="go()" value="Try this URL in a new tab"><i
+                  class="fa fa-external-link" aria-hidden="true"></i> Try this URL in a new tab</button>
               <button class="btn btn-default" onclick="location.reload()" value="Reset">Reset</button>
             </div>
             </br>
           </div>
-          </form>
+        </form>
       </div>
       <div class="col-4" id="attDetailsTable">
         <div id='errors' style='display:none;'>
@@ -84,4 +89,5 @@
     </div>
   </div>
 </body>
+
 </html>

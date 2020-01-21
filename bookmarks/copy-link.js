@@ -8,7 +8,6 @@ javascript: function textToClipboard(text) {
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);
-
     const successful = document.execCommand('copy');
     document.body.removeChild(dummy);
 }
