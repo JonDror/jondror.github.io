@@ -62,7 +62,7 @@ function printAtt() {
     }
 
     if (value.match(/[^\x20-\x7E]/)){
-      addError("<strong>"+key+"</strong> might have invalid characters in it. <a href='https://www.soscisurvey.de/tools/view-chars.php' target='_blank' class='alert-link'>Test here</a>");
+      addError("<strong>"+key+"</strong> might have invalid characters in it. <a href='https://www.soscisurvey.de/tools/view-chars.php?s="+value+"' target='_blank' class='alert-link'>Test here</a>");
     }
 
     showAtt(key,value);
