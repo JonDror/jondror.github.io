@@ -1,11 +1,11 @@
 function encode() {
-    var obj = document.getElementById('dencoder');
+    var obj = document.getElementById('url-input');
     var unencoded = obj.value;
     obj.value = encodeURIComponent(unencoded).replace(/'/g, "%27").replace(/"/g, "%22");
 }
 
 function decode() {
-    var obj = document.getElementById('dencoder');
+    var obj = document.getElementById('url-input');
     var encoded = obj.value;
     obj.value = decodeURIComponent(encoded.replace(/\+/g, " "));
 }
@@ -21,29 +21,26 @@ function split() {
     printAtt();
     validateURL();
     ($('#error_list').children('div').length == 0) ? $('#errors').hide(): $('#errors').show();
-    autoExpand(document.getElementById('dencoder'));
+    autoExpand(document.getElementById('url-input'));
 }
 
 function go() {
-    $('#dencoder').val(
-        $('#dencoder').val().replace(new RegExp("\n", "g"), "")
+    $('#url-input').val(
+        $('#url-input').val().replace(new RegExp("\n", "g"), "")
     );
-    window.open($('#dencoder').val());
+    window.open($('#url-input').val());
     split();
 }
 
 function copyUrl() {
-    $('#dencoder').val(
-        $('#dencoder').val().replace(new RegExp("\n", "g"), "")
+    $('#url-input').val(
+        $('#url-input').val().replace(new RegExp("\n", "g"), "")
     );
-    window.open($('#dencoder').val());
+    window.open($('#url-input').val());
     split();
 }
 
 function printAtt() {
-    //Show common attributes
-    replaceInText("<", "&lt;");
-    replaceInText(">", "&gt;");
 
     $('#attDetails').empty();
     showAtt('<strong>Endpoint</strong>', getEndPoint());
@@ -54,25 +51,24 @@ function printAtt() {
             addError("<strong>" + key + "</strong> has an unencoded space in value");
         }
 
+        if (value.indexOf("<") > -1 || value.indexOf(">") < -1) {
+            addError("<strong>" + key + "</strong> has an unencoded &gt; / &lt; in value");
+        }
+
         let numericalOnlyKeys = ["campaignid", "adgroupid", "adgroupid"];
-        if (numericalOnlyKeys.includes(key)) {
-            if (value.match(/[^\d]/)) {
-                addError("<strong>" + key + "</strong> SHOULD BE ONLY DIGITS", "warning");
-            }
+        if (key.endsWith("id") && value.indexOf("kwd-")<0 && value.match(/[^\d]/)) {
+            addError("<strong>" + key + "</strong> SHOULD BE ONLY DIGITS", "warning");
         }
 
         if (value.match(/[^\x20-\x7E]/)) {
             addError("<strong>" + key + "</strong> might have invalid characters in it. <a href='https://www.soscisurvey.de/tools/view-chars.php?s=" + value + "' target='_blank' class='alert-link'>Test here</a>");
         }
-
         showAtt(key, value);
     });
-    replaceInText("&lt;", "<");
-    replaceInText("&gt;", ">");
 }
 
 function validateURL() {
-    var url = $('#dencoder').val();
+    var url = $('#url-input').val();
     //validation rules
     if (url.replace(/[^\?]/g, "").length > 1) {
         addError('Found <strong>' + url.replace(/[^\?]/g, "").length + '</strong> question marks!');
@@ -104,22 +100,27 @@ function addError(err, type) {
 }
 
 function getUrlVars() {
-    var url = $('#dencoder').val();
+    var url = $('#url-input').val();
     var vars = {};
-    var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-        vars[key] = value;
-    });
-    return vars;
+    try {
+        var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+            vars[key] = value;
+        });
+        console.log('vars :', vars);
+        return vars;
+    } catch (error) {
+        console.error('Can\'t get url parameters :', error);
+    }
 }
 
 function getEndPoint() {
-    var url = $('#dencoder').val();
-    var endpoint = $('#dencoder').val().match(new RegExp("[^?]*", 'i'));
+    var url = $('#url-input').val();
+    var endpoint = $('#url-input').val().match(new RegExp("[^?]*", 'i'));
     return endpoint[0];
 }
 
 function getAtt(att) {
-    var subStr = $('#dencoder').val().match(new RegExp("" + att + "=(.*)&", 'i'));
+    var subStr = $('#url-input').val().match(new RegExp("" + att + "=(.*)&", 'i'));
     if (subStr == null) {
         return "N/A";
     } else {
@@ -129,8 +130,8 @@ function getAtt(att) {
 }
 
 function replaceInText(oldStr, newStr) {
-    $('#dencoder').val(
-        $('#dencoder').val().replace(new RegExp(oldStr, "g"), newStr)
+    $('#url-input').val(
+        $('#url-input').val().replace(new RegExp(oldStr, "g"), newStr)
     );
 }
 
@@ -138,6 +139,7 @@ function replaceInText(oldStr, newStr) {
 function showAtt(name, data) {
     //alert(name);
     //alert(data);
+    data=data.replace('<','&lt;').replace('>','&gt;');
     if (data == "N/A" || data == "") {
         return null;
     } else {
@@ -182,6 +184,6 @@ $(document).ready(function () {
     $('#attDetailsTable').hide();
 
     if (window.location.href.indexOf("demo=true") > -1) {
-        $('#dencoder').val("https://5035.xg4ken.com/trk/v1??prof=15525&camp=50543&kct=google&kchid=1070664021&criteriaid=kwd-473717616139&campaignid=a8557496860&locphy=&adgroupid=83431984501&adpos=&cid=405991884886&networkType=search&kdv=c&kext=&kadtype=&kmc=&kpid=&campaign_name=CatchM­eIfYouCan&url=https://www.randsroofing.co.uk/fascias soffits-and-guttering");
+        $('#url-input').val("https://5035.xg4ken.com/trk/v1??prof=15525&camp=50543&kct=google&kchid=1070664021&criteriaid=kwd-473717616139&campaignid=a8557496860&locphy=&adgroupid=83431984501&adpos=&cid=405991884886&networkType=search&kdv=c&kext=&kadtype=&kmc=&kpid=&campaign_name=CatchM­eIfYouCan&url=https://www.randsroofing.co.uk/fascias soffits-and-guttering");
     }
 });
