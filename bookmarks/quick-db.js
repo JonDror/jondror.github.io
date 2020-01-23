@@ -1,0 +1,2 @@
+javascript: var KS = prompt('KS:');
+window.open('mysql://query:query@Eclidb'+KS+'.kenshooprd.local/kazaam?statusColor=DAEBC2&enviroment=production&name='+KS+'&tLSMode=0&usePrivateKey=false&safeModeLevel=0&advancedSafeModeLevel=0','_target');
