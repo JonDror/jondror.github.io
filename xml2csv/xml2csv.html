@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- jQ -->
+  <script src="./js/jquery-3.3.1.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="./js/bootstrap.min.js"></script>
+  <!-- Font-Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type='text/javascript' src="https://cdn.rawgit.com/abdmob/x2js/master/xml2json.js"></script>
+    <script type='text/javascript' src="./js/FileSaver.min.js"></script>
+    <!-- Font-Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <script>
+        function handleFileSelect() {
+            if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+                alert('The File APIs are not fully supported in this browser.');
+                return;
+            }
+
+            var input = document.getElementById('fileinput');
+            if (!input) {
+                alert("Um, couldn't find the fileinput element.");
+            } else if (!input.files) {
+                alert("This browser doesn't seem to support the `files` property of file inputs.");
+            } else if (!input.files[0]) {
+                alert("Please select a file before clicking 'Load'");
+            } else {
+                var file = input.files[0];
+                var fr = new FileReader();
+                fr.onloadstart = function () {
+                    $('#spinner').html('<i class="fa fa-spinner fa-spin"></i> Processing file');
+                };
+                fr.onloadend = function () {
+                    $('#spinner').html('done');
+                };
+                fr.onload = function () {
+                    var data = fr.result;
+                    var xml = "";
+                    if (data !== null && data.trim().length !== 0) {
+
+                        try {
+                            xml = $.parseXML(data);
+                        } catch (e) {
+                            throw e;
+                        }
+
+                        var x2js = new X2JS();
+
+                        data = x2js.xml2json(xml);
+                        jsonTocsvbyjson(data);
+
+                    }
+                };
+                fr.readAsText(file);
+                //fr.readAsDataURL(file);
+                console.log('fr :', fr);
+            }
+        }
+
+        function jsonTocsvbyjson(data, returnFlag) {
+
+            arr = [];
+            flag = true;
+
+            var header = "";
+            var content = "";
+            var headFlag = true;
+
+            try {
+
+                var type1 = typeof data;
+
+                if (type1 != "object") {
+                    data = processJSON($.parseJSON(data));
+                } else {
+                    data = processJSON(data);
+                }
+
+            } catch (e) {
+                if (returnFlag === undefined || !returnFlag) {
+                    console.error("Error in Convert to CSV");
+                } else {
+                    console.error("Error in Convert :" + e);
+                }
+                return false;
+            }
+
+            $.each(data, function (k, value) {
+                if (k % 2 === 0) {
+                    if (headFlag) {
+                        if (value != "end") {
+                            header += value + ",";
+                        } else {
+                            // remove last colon from string
+                            header = header.substring(0, header.length - 1);
+                            headFlag = false;
+                        }
+                    }
+                } else {
+                    if (value != "end") {
+                        var temp = data[k - 1];
+                        if (header.search(temp) != -1) {
+                            content += value + ",";
+                        }
+                    } else {
+                        // remove last colon from string
+                        content = content.substring(0, content.length - 1);
+                        content += "\n";
+                    }
+                }
+
+            });
+
+            if (returnFlag === undefined || !returnFlag) {
+                //$("#csvArea").val(header + "\n" + content);
+                var blob = new Blob([header + "\n" + content], {
+                    type: "text/plain;charset=utf-8"
+                });
+                saveAs(blob, document.getElementById('fileinput').files[0].name.replace(".xml","")+"-xml2csv.csv");
+            } else {
+                return (header + "\n" + content);
+            }
+        }
+
+        function processJSON(data) {
+
+            $.each(data, function (k, data1) {
+
+                var type1 = typeof data1;
+
+                if (type1 == "object") {
+
+                    flag = false;
+                    processJSON(data1);
+                    arr.push("end");
+                    arr.push("end");
+
+                } else {
+                    arr.push(k, data1);
+                }
+
+            });
+            return arr;
+        }
+
+        function gettime() {
+            let today = new Date();
+            let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            let dateTime = date + '-' + time;
+            return dateTime;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>XML2CSV Demo</h1>
+    <button id="convertToXmlBtn" onclick="xmlTocsv()">XML => CSV</button>
+
+    <div>
+        <h4>Load file:</h4>
+        <input type="file" id="fileinput" />
+        <input type='button' id='btnLoad' value='Load' onclick='handleFileSelect();' />
+        <p id='spinner'>status</p>
+    </div>
+
+    <!-- <div>
+        <h4>CSV:</h4>
+        <textarea id="csvArea" cols="55" rows="15"></textarea>
+    </div> -->
+</body>
+
+</html>
