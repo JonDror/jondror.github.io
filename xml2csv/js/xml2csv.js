@@ -19,7 +19,7 @@ function handleFileSelect() {
     } else if (!input.files[0].name.endsWith(".xml")) {
         alert("Please choose an XML file only!");
     } else if (input.files[0].size > 30000000) {
-        alert("File size is larger than 30MB and will crash your browser. Ask Alex to convert :)");
+        alert("File size is larger than 30MB and will crash your browser. \Alex says you should get a real computer :)");
     }else {
         $('#spinner').html('<i class="fa fa-spinner fa-spin"></i> Processing file');
         var longtimer = setTimeout(function(){ $('#spinner').append("<p>This will take some time....</p>"); }, 3000);
