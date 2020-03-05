@@ -37,6 +37,8 @@ function handleFileSelect() {
                 try {
                     xml = $.parseXML(data);
                 } catch (e) {
+                    alert('Error parsing xml - Check console log');
+                    console.error('Error parsing xml', e);
                     throw e;
                 }
 
