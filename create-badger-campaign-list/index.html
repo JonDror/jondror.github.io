@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Convert Campaign List to String</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script>
+      function createArray() {
+          var clist=$('#c_list').val();
+          clist=clist.replace("'","\\'")
+          //console.log('clist :', clist);
+          var carrary=clist.split("\n");
+          //console.log('carrary :', carrary);
+          var new_c = "('"+carrary.join("'),('")+"')";
+          $('#c_list').val(new_c);
+      }
+  </script>   
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <p class="lead">Create a string like ('campaign 1'),('campaign 2'),('campaign 3') from a list<br>Used for <a href="http://webworks-badger.kenshoo.com/sqltemplate/6fd6d964-7db7-11ea-baeb-005056a56e93" target="_blank" rel="noopener noreferrer">this</a> badger template </p>
+        <hr class="my-2">
+        <div class="form-group">
+        <textarea name="c_list" id="c_list" cols="30" rows="5" class="form-control" placeholder="Place campaign names here (each in a new line)"></textarea>
+      </div>
+        <p class="lead">
+          <button type="button" class="btn btn-primary" onclick="createArray()">Convert</button>
+        </p>
+      </div>
+  
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
