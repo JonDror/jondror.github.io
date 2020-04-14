@@ -12,7 +12,7 @@
     <script>
       function createArray() {
           var clist=$('#c_list').val();
-          clist=clist.replace("'","\\'")
+          clist=clist.replace(/\'/g, "\\'");
           //console.log('clist :', clist);
           var carrary=clist.split("\n");
           //console.log('carrary :', carrary);
